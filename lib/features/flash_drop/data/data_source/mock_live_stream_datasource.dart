@@ -3,7 +3,7 @@ import 'dart:math';
 
 import 'package:flash_drop_app/features/flash_drop/domain/entities/flash_drop_entity.dart';
 
-class MockLiveStreamDatasrouce {
+class MockLiveStreamDataSource {
   Stream<FlashDropEntity> connectLiveQuoteStream() {
     final random = Random(99);
     double livePrice = 1635.4;

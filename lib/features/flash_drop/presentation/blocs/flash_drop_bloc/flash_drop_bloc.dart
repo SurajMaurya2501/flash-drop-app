@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flash_drop_app/features/flash_drop/domain/entities/flash_drop_entity.dart';
 import 'package:flash_drop_app/features/flash_drop/domain/entities/historical_bid_point.dart';
-import 'package:flash_drop_app/features/flash_drop/domain/usecases/flash_drop_usecases.dart';
+import 'package:flash_drop_app/features/flash_drop/domain/use_cases/flash_drop_usecases.dart';
 import 'package:flash_drop_app/features/flash_drop/presentation/blocs/flash_drop_bloc/flash_drop_event.dart';
 import 'package:flash_drop_app/features/flash_drop/presentation/blocs/flash_drop_bloc/flash_drop_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

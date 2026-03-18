@@ -4,7 +4,7 @@ import 'package:flash_drop_app/features/flash_drop/presentation/blocs/flash_drop
 import 'package:flash_drop_app/features/flash_drop/presentation/widgets/hold_to_secure_button.dart';
 import 'package:flash_drop_app/features/flash_drop/presentation/widgets/inventory_pill.dart';
 import 'package:flash_drop_app/features/flash_drop/presentation/widgets/luxury_live_chart.dart';
-import 'package:flash_drop_app/features/flash_drop/presentation/widgets/luxury_price_picker.dart';
+import 'package:flash_drop_app/features/flash_drop/presentation/widgets/luxury_price_ticker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

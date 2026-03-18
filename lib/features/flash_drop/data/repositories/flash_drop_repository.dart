@@ -1,14 +1,14 @@
 import 'dart:convert';
 import 'dart:isolate';
-import 'package:flash_drop_app/features/flash_drop/data/datasource/mock_historical_bids_payload_source.dart';
-import 'package:flash_drop_app/features/flash_drop/data/datasource/mock_live_stream_datasrouce.dart';
+import 'package:flash_drop_app/features/flash_drop/data/data_source/mock_historical_bids_payload_source.dart';
+import 'package:flash_drop_app/features/flash_drop/data/data_source/mock_live_stream_datasource.dart';
 import 'package:flash_drop_app/features/flash_drop/domain/entities/flash_drop_entity.dart';
 import 'package:flash_drop_app/features/flash_drop/domain/entities/historical_bid_point.dart';
-import 'package:flash_drop_app/features/flash_drop/domain/repository_interface/flash_drop_repository_interface.dart';
+import 'package:flash_drop_app/features/flash_drop/domain/repositories/flash_drop_repository_interface.dart';
 
 class FlashDropRepository implements FlashDropRepositoryInterface {
   final mockData = MockHistoricalBidsPayloadSource();
-  final mockStreamData = MockLiveStreamDatasrouce();
+  final mockStreamData = MockLiveStreamDataSource();
 
   List<HistoricalBidPoint> parseHistoricalBidData({required String payload}) {
     final decodeData = jsonDecode(payload);
