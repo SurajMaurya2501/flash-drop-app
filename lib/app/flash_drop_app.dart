@@ -12,7 +12,7 @@ class LuxuryFlashDropApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      // showPerformanceOverlay: true,
+      showPerformanceOverlay: true,
       title: 'Luxury Flash Drop',
       debugShowCheckedModeBanner: false,
       // theme: buildLuxuryTheme(),

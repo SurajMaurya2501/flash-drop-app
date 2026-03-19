@@ -34,15 +34,21 @@ class FlashDropBloc extends Bloc<FlashDropEvent, FlashDropState> {
       emit(
         state.copyWith(status: FlashDropStatus.success, history: historyData),
       );
-      _liveSubscription?.cancel();
+      await _liveSubscription?.cancel();
+      _liveSubscription = null;
       _liveSubscription = flashDropUsecases.getFlashDropStreamData().listen((
-        event,
+        liveEvent,
       ) {
-        if (!isSoldOut) {
-          isSoldOut = event.remainingInventory == 0;
-          add(FetchLiveData(flashDropEntity: event));
-        } else {
-          _liveSubscription!.pause();
+        if (isSoldOut) {
+          return;
+        }
+
+        isSoldOut = liveEvent.remainingInventory == 0;
+        add(FetchLiveData(flashDropEntity: liveEvent));
+
+        if (isSoldOut) {
+          _liveSubscription?.cancel();
+          _liveSubscription = null;
         }
       });
     } catch (e) {

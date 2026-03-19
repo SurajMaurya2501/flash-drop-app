@@ -37,6 +37,11 @@ class _LuxuryLiveChartState extends State<LuxuryLiveChart>
   @override
   void didUpdateWidget(covariant LuxuryLiveChart oldWidget) {
     super.didUpdateWidget(oldWidget);
+    if (identical(oldWidget.historicalSeries, widget.historicalSeries) &&
+        identical(oldWidget.liveSeries, widget.liveSeries)) {
+      return;
+    }
+
     final newMergedSeries = _buildMergedSeries(
       widget.historicalSeries,
       widget.liveSeries,
@@ -55,6 +60,11 @@ class _LuxuryLiveChartState extends State<LuxuryLiveChart>
     final targetPrice = newMergedSeries.isEmpty
         ? previousPrice
         : newMergedSeries.last.price;
+
+    if (targetPrice == previousPrice) {
+      return;
+    }
+
     _pointerPriceAnimation =
         Tween<double>(begin: previousPrice, end: targetPrice).animate(
           CurvedAnimation(

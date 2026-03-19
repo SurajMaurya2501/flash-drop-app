@@ -7,44 +7,46 @@ import 'package:flash_drop_app/features/flash_drop/domain/entities/historical_bi
 import 'package:flash_drop_app/features/flash_drop/domain/repositories/flash_drop_repository_interface.dart';
 
 class FlashDropRepository implements FlashDropRepositoryInterface {
-  final mockData = MockHistoricalBidsPayloadSource();
   final mockStreamData = MockLiveStreamDataSource();
-
-  List<HistoricalBidPoint> parseHistoricalBidData({required String payload}) {
-    final decodeData = jsonDecode(payload);
-    List<dynamic> bids = decodeData['bids'];
-    const chartTargetPoints = 900;
-    int stride = (bids.length / chartTargetPoints).ceil().clamp(1, bids.length);
-    List<dynamic> sampleData = [];
-    for (int i = 0; i < bids.length; i += stride) {
-      sampleData.add(bids[i]);
-    }
-    if (sampleData.isNotEmpty && sampleData.last != bids.last) {
-      sampleData.add(bids.last);
-    }
-    return sampleData
-        .map(
-          (e) => HistoricalBidPoint(
-            epochMs: int.parse(e['t'].toString()),
-            price: double.parse((e['p'] ?? '0.0').toString()),
-          ),
-        )
-        .toList();
-  }
+  Future<List<HistoricalBidPoint>>? _historicalDataFuture;
 
   @override
   Future<List<HistoricalBidPoint>> getHistoricalData() async {
-    final isolateData = await Isolate.run(() async {
-      final data = await mockData.fetchMassivePayload();
-      return parseHistoricalBidData(payload: data);
+    _historicalDataFuture ??= Isolate.run(() async {
+      final data = await MockHistoricalBidsPayloadSource()
+          .fetchMassivePayload();
+      return _parseHistoricalBidData(payload: data);
     });
-    return isolateData;
+    return _historicalDataFuture!;
   }
 
   @override
   Stream<FlashDropEntity> streamLiveFlashDropData() {
-    return mockStreamData.connectLiveQuoteStream().map(
-      (model) => model.toEntity(),
-    );
+    return mockStreamData.connectLiveQuoteStream();
   }
+}
+
+List<HistoricalBidPoint> _parseHistoricalBidData({required String payload}) {
+  final decodeData = jsonDecode(payload);
+  final bids = decodeData['bids'] as List<dynamic>;
+  const chartTargetPoints = 900;
+  final stride = (bids.length / chartTargetPoints).ceil().clamp(1, bids.length);
+
+  final sampleData = <dynamic>[];
+  for (int i = 0; i < bids.length; i += stride) {
+    sampleData.add(bids[i]);
+  }
+
+  if (sampleData.isNotEmpty && sampleData.last != bids.last) {
+    sampleData.add(bids.last);
+  }
+
+  return sampleData
+      .map(
+        (e) => HistoricalBidPoint(
+          epochMs: int.parse(e['t'].toString()),
+          price: double.parse((e['p'] ?? '0.0').toString()),
+        ),
+      )
+      .toList(growable: false);
 }
