@@ -70,8 +70,9 @@ class FlashDropMainScreen extends StatelessWidget {
                     sliver: SliverList(
                       delegate: SliverChildListDelegate.fixed(<Widget>[
                         Text(
-                          'Flash Drop Sale',
-                          style: Theme.of(context).textTheme.headlineLarge,
+                          'Prime Drop',
+                          style: Theme.of(context).textTheme.headlineLarge
+                              ?.copyWith(color: Colors.white),
                         ),
                         const SizedBox(height: 8),
                         Text(
