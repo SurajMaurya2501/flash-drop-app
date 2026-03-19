@@ -93,14 +93,16 @@ class _LuxuryLiveChartState extends State<LuxuryLiveChart>
       child: Stack(
         fit: StackFit.expand,
         children: [
-          AnimatedBuilder(
-            animation: _revealProgress,
-            builder: (context, _) => CustomPaint(
-              painter: LuxuryLineChartPainter(
-                mergedSeries: _chartSeries,
-                progress: _revealProgress.value,
+          RepaintBoundary(
+            child: AnimatedBuilder(
+              animation: _revealProgress,
+              builder: (context, _) => CustomPaint(
+                painter: LuxuryLineChartPainter(
+                  mergedSeries: _chartSeries,
+                  progress: _revealProgress.value,
+                ),
+                child: const SizedBox.expand(),
               ),
-              child: const SizedBox.expand(),
             ),
           ),
           AnimatedBuilder(
